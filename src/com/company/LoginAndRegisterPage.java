@@ -89,11 +89,11 @@ public class LoginAndRegisterPage {
                     try {
                         int result = handler.login(username.getText(), password.getText());
                         if (result == 1) {
-                            JOptionPane.showMessageDialog(loginFrame, "Login Successfully", "Welcome", JOptionPane.PLAIN_MESSAGE);
+                            JOptionPane.showMessageDialog(loginFrame, "Login Successfully", "Gity", JOptionPane.PLAIN_MESSAGE);
                             loginFrame.dispose();
                             HomePage p = new HomePage(username.getText());
                         } else if (result == 0) {
-                            JOptionPane.showMessageDialog(loginFrame, "Username or Password is incorrect !", "Error", JOptionPane.PLAIN_MESSAGE);
+                            JOptionPane.showMessageDialog(loginFrame, "Username or Password is incorrect !", "Gity", JOptionPane.PLAIN_MESSAGE);
                         }
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
@@ -102,11 +102,11 @@ public class LoginAndRegisterPage {
                     try {
                         int result = handler.register(username.getText(), password.getText());
                         if (result == 1) {
-                            JOptionPane.showMessageDialog(loginFrame, "Register Successfully", "Welcome", JOptionPane.PLAIN_MESSAGE);
+                            JOptionPane.showMessageDialog(loginFrame, "Register Successfully", "Gity", JOptionPane.PLAIN_MESSAGE);
                             loginFrame.dispose();
                             HomePage p = new HomePage(username.getText());
                         } else if (result == 0) {
-                            JOptionPane.showMessageDialog(loginFrame, "Username is in use ! ", "Error", JOptionPane.PLAIN_MESSAGE);
+                            JOptionPane.showMessageDialog(loginFrame, "Username is in use ! ", "Gity", JOptionPane.PLAIN_MESSAGE);
                         }
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
