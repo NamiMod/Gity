@@ -14,7 +14,7 @@ import java.util.Scanner;
  *
  *
  * @author Seyed Nami Modarressi
- * @version 0.01
+ * @version 0.2
  *
  * Spring 2021
  */
@@ -45,7 +45,13 @@ public class FileHandler {
         }
     }
 
-
+    /**
+     * read data from data.txt and register user
+     *
+     * @param username username of user
+     * @param password password of user
+     * @return 1 or 0 (and -1 for exception)
+     */
     public int register(String username, String password) throws IOException {
 
         try {
@@ -62,25 +68,21 @@ public class FileHandler {
             fw.write(username + "\n");
             fw.write(password + "\n");
             fw.close();
-
-            File server = new File("Data/Server/"+username);
+            File server = new File("Data/Server/" + username);
             boolean bool = server.mkdir();
-            if (!bool){
+            if (!bool) {
                 System.out.println("Cant create Folder for user");
             }
-            File client = new File("Data/Client/"+username);
+            File client = new File("Data/Client/" + username);
             bool = client.mkdir();
-            if (!bool){
+            if (!bool) {
                 System.out.println("Cant create Folder for user");
             }
-
-
             return 1;
         } catch (Exception e) {
             System.out.println("Cant read users Data !");
             return -1;
         }
-
     }
 
 
