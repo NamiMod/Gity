@@ -57,7 +57,7 @@ public class HomePage {
     public void HomeElements(){
 
         Random number = new Random();
-        int image = number.nextInt(5)+1;
+        int image = number.nextInt(4)+1;
         icon = new JLabel();
         String path = "images/"+image+".png";
         icon.setIcon(new ImageIcon(path));
@@ -81,7 +81,7 @@ public class HomePage {
         view.setBorder(BorderFactory.createMatteBorder(0, 2, 0, 0, line));
         Home.add(view);
 
-        text_repo = new JLabel("Repositories");
+        text_repo = new JLabel("Console");
         text_repo.setLocation(400,0);
         text_repo.setSize(400,70);
         text_repo.setForeground(text);
@@ -106,6 +106,12 @@ public class HomePage {
         run.setFont(new Font("Arial", Font.PLAIN, 20));
         run.setBounds(run.getX(), run.getY(), 180, 30);
         run.setBorder(new RoundBorder(20));
+        run.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
         Home.add(run);
 
         help = new JButton();

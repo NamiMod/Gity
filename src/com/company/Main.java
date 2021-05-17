@@ -17,6 +17,7 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-	    HomePage p = new HomePage("Nami");
+        //LoginAndRegisterPage p = new LoginAndRegisterPage();
+        HomePage p = new HomePage("nami");
     }
 }
