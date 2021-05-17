@@ -5,6 +5,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -76,7 +77,7 @@ public class HomePage {
         view.setLocation(400,70);
         view.setSize(298,300);
         view.setForeground(text);
-        view.setFont(new Font("Arial", Font.PLAIN, 20));
+        view.setFont(new Font("Arial", Font.PLAIN, 15));
         view.setEnabled(false);
         view.setBorder(BorderFactory.createMatteBorder(0, 2, 0, 0, line));
         Home.add(view);
@@ -109,7 +110,12 @@ public class HomePage {
         run.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    Client run = new Client(username,command.getText());
+                    view.setText(view.getText()+run.run());
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
         });
         Home.add(run);
