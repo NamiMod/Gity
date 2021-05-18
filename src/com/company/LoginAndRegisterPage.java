@@ -86,30 +86,35 @@ public class LoginAndRegisterPage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (login.getText().equals("Login")) {
+
+                    int result = 0;
                     try {
-                        int result = handler.login(username.getText(), password.getText());
-                        if (result == 1) {
-                            JOptionPane.showMessageDialog(loginFrame, "Login Successfully", "Gity", JOptionPane.PLAIN_MESSAGE);
-                            loginFrame.dispose();
-                            HomePage p = new HomePage(username.getText());
-                        } else if (result == 0) {
-                            JOptionPane.showMessageDialog(loginFrame, "Username or Password is incorrect !", "Gity", JOptionPane.PLAIN_MESSAGE);
-                        }
+                        result = Client.login(username.getText(), password.getText());
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }
+                    if (result == 1) {
+                        JOptionPane.showMessageDialog(loginFrame, "Login Successfully", "Gity", JOptionPane.PLAIN_MESSAGE);
+                        loginFrame.dispose();
+                        HomePage p = new HomePage(username.getText());
+                    } else if (result == 0) {
+                        JOptionPane.showMessageDialog(loginFrame, "Username or Password is incorrect !", "Gity", JOptionPane.PLAIN_MESSAGE);
+                    }
+
                 } else if (login.getText().equals("Register")) {
+
+                    int result = 0;
                     try {
-                        int result = handler.register(username.getText(), password.getText());
-                        if (result == 1) {
-                            JOptionPane.showMessageDialog(loginFrame, "Register Successfully", "Gity", JOptionPane.PLAIN_MESSAGE);
-                            loginFrame.dispose();
-                            HomePage p = new HomePage(username.getText());
-                        } else if (result == 0) {
-                            JOptionPane.showMessageDialog(loginFrame, "Username is in use ! ", "Gity", JOptionPane.PLAIN_MESSAGE);
-                        }
+                        result = Client.register(username.getText(), password.getText());
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
+                    }
+                    if (result == 1) {
+                        JOptionPane.showMessageDialog(loginFrame, "Register Successfully", "Gity", JOptionPane.PLAIN_MESSAGE);
+                        loginFrame.dispose();
+                        HomePage p = new HomePage(username.getText());
+                    } else if (result == 0) {
+                        JOptionPane.showMessageDialog(loginFrame, "Username is in use ! ", "Gity", JOptionPane.PLAIN_MESSAGE);
                     }
 
                 }

@@ -34,4 +34,14 @@ public class Client {
         return result;
 
     }
+
+    public static int login(String username, String password) throws IOException {
+        LoginRequest req = new LoginRequest();
+        return req.start(username,password);
+    }
+
+    public static int register(String username, String password) throws IOException {
+        RegisterRequest req = new RegisterRequest();
+        return req.start(username,password);
+    }
 }
