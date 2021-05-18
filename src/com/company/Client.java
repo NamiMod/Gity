@@ -44,7 +44,6 @@ public class Client {
         }
 
         if (command.contains("ls -r")) {
-
             String[] data = command.split(" ", 3);
             Request req = new Request();
             String result = req.getRepos(data[2]);
@@ -67,9 +66,40 @@ public class Client {
             }
         }
 
+        if (command.contains("mkrepo")) {
+            int code = 1 ;
+            String[] data = command.split(" ", 3);
+            if (data[1].equals("-public")){
+                code = 1;
+            }
+            if (data[1].equals("-private")){
+                code = 2;
+            }
+            if (data[2].contains(" ")) {
+                return "Please don't use space in name of repository";
+            } else {
+                Request req = new Request();
+                int result = req.makeRepo(name, data[2],code);
+                if (result == 0){
+                    return "Can not create repository ! :(\nPlease Try again";
+                }else {
+                    return "Repository Created successfully ! :)" ;
+                }
+            }
+        }
 
+        if (command.contains("addc")){
+            String[] data = command.split(" ", 3);
+            Request req = new Request();
+            int result = req.addContributor(name,data[1],data[2]);
+            if (result == 1){
+                return "Contributor added successfully ! :)";
+            }else {
+                return "Can not add contributor :( please try again";
+            }
+        }
 
-        return null;
+        return "Command Not Found !  \nPlease use help button to see available commands";
 
     }
 

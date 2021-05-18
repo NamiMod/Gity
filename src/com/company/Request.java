@@ -65,6 +65,36 @@ public class Request {
         }
     }
 
+    public int makeRepo(String username,String name,int code) throws IOException {
+        socket = new Socket("127.0.0.1", 1235);
+        output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+        read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        try {
+            return newRepo(username,name,code);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+        finally {
+            close();
+        }
+    }
+
+    public int addContributor(String username,String repoName,String name) throws IOException {
+        socket = new Socket("127.0.0.1", 1235);
+        output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+        read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        try {
+            return newContributor(username,repoName,name);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+        finally {
+            close();
+        }
+    }
+
     /**
      * @param username username
      * @param password password
@@ -106,6 +136,24 @@ public class Request {
         output.println(name);
         output.flush();
         return read.readLine();
+    }
+
+    public int newRepo(String username , String name , int code) throws IOException {
+        output.println("5");
+        output.println(username);
+        output.println(name);
+        output.println(code);
+        output.flush();
+        return Integer.parseInt(read.readLine());
+    }
+
+    public int newContributor(String username,String repoName , String name) throws IOException {
+        output.println("6");
+        output.println(username);
+        output.println(repoName);
+        output.println(name);
+        output.flush();
+        return Integer.parseInt(read.readLine());
     }
 
     /**

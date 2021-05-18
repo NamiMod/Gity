@@ -18,5 +18,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         LoginAndRegisterPage p = new LoginAndRegisterPage();
+        //FileHandler p = new FileHandler();
+        //p.makeRepo("test","hiiiii",2);
     }
 }

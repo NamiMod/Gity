@@ -141,6 +141,7 @@ public class HomePage {
                 try {
                     Client run = new Client(username,command.getText());
                     view.setText(run.run());
+                    command.setText("Enter Your Command ...");
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }

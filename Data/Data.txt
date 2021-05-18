@@ -1,8 +1,4 @@
 test
 test
-nami
-nami
 salam
 salam
-salam2
-salam2

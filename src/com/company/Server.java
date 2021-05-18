@@ -91,6 +91,25 @@ public class Server {
             String x = p.getRepos(name);
             output.println(x);
         }
+        if (code.equals("5")){
+            String username = input.readLine();
+            String name = input.readLine();
+            String repoCode = input.readLine();
+            System.out.println("Make new Repository request ...");
+            FileHandler p = new FileHandler();
+            System.out.println(username+"\n"+name+"\n"+repoCode);
+            int x = p.makeRepo(username,name,Integer.parseInt(repoCode));
+            output.println(x);
+        }
+        if (code.equals("6")){
+            String username = input.readLine();
+            String repoName = input.readLine();
+            String name = input.readLine();
+            System.out.println("Add new contributor request ...");
+            FileHandler p = new FileHandler();
+            int x = p.addContributor(username,repoName,name);
+            output.println(x);
+        }
 
         output.flush();
         output.close();
