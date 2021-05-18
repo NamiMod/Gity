@@ -102,21 +102,24 @@ public class LoginAndRegisterPage {
                     }
 
                 } else if (login.getText().equals("Register")) {
+                    if (username.getText().contains(" ")) {
+                        JOptionPane.showMessageDialog(loginFrame, "Don't use space in username !", "Gity", JOptionPane.PLAIN_MESSAGE);
+                    } else {
+                        int result = 0;
+                        try {
+                            result = Client.register(username.getText(), password.getText());
+                        } catch (IOException ioException) {
+                            ioException.printStackTrace();
+                        }
+                        if (result == 1) {
+                            JOptionPane.showMessageDialog(loginFrame, "Register Successfully", "Gity", JOptionPane.PLAIN_MESSAGE);
+                            loginFrame.dispose();
+                            HomePage p = new HomePage(username.getText());
+                        } else if (result == 0) {
+                            JOptionPane.showMessageDialog(loginFrame, "Username is in use ! ", "Gity", JOptionPane.PLAIN_MESSAGE);
+                        }
 
-                    int result = 0;
-                    try {
-                        result = Client.register(username.getText(), password.getText());
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
                     }
-                    if (result == 1) {
-                        JOptionPane.showMessageDialog(loginFrame, "Register Successfully", "Gity", JOptionPane.PLAIN_MESSAGE);
-                        loginFrame.dispose();
-                        HomePage p = new HomePage(username.getText());
-                    } else if (result == 0) {
-                        JOptionPane.showMessageDialog(loginFrame, "Username is in use ! ", "Gity", JOptionPane.PLAIN_MESSAGE);
-                    }
-
                 }
             }
         });

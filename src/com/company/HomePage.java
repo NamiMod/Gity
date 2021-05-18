@@ -106,7 +106,7 @@ public class HomePage {
         view.setLocation(400,70);
         view.setSize(298,300);
         view.setFont(new Font("Arial", Font.PLAIN, 12));
-        view.setEnabled(true);
+        view.setEnabled(false);
         view.setBorder(BorderFactory.createMatteBorder(0, 2, 0, 0, line));
         Home.add(view);
 

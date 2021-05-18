@@ -1,9 +1,6 @@
 package com.company;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 /**
@@ -85,5 +82,50 @@ public class FileHandler {
         }
     }
 
+    public String getUsers(){
+        File file = new File("Data/Server");
+        String result="";
+        int x = 0;
+        String[] directories = file.list(new FilenameFilter() {
+            @Override
+            public boolean accept(File current, String name) {
+                return new File(current, name).isDirectory();
+            }
+        });
+        x = directories.length;
+        assert directories != null;
+        for (String temp :directories){
+            if (x > 1) {
+                result = result + temp + " ";
+                x=x-1;
+            }else {
+                result = result + temp;
+            }
+        }
+        return result;
+    }
+
+    public String getRepos(String name){
+        File file = new File("Data/Server/"+name);
+        String result="";
+        int x = 0;
+        String[] directories = file.list(new FilenameFilter() {
+            @Override
+            public boolean accept(File current, String name) {
+                return new File(current, name).isDirectory();
+            }
+        });
+        x = directories.length;
+        assert directories != null;
+        for (String temp :directories){
+            if (x > 1) {
+                result = result + temp + " ";
+                x=x-1;
+            }else {
+                result = result + temp;
+            }
+        }
+        return result;
+    }
 
 }

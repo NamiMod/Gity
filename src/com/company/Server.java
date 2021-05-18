@@ -38,7 +38,7 @@ public class Server {
      * @throws IOException cant read files
      */
     public void start() throws IOException {
-        serversocket = new ServerSocket(1234);
+        serversocket = new ServerSocket(1235);
         System.out.println("Connection Starting on port:" + serversocket.getLocalPort());
         while (true) {
             Socket client = serversocket.accept();
@@ -63,7 +63,7 @@ public class Server {
         String code = input.readLine();
 
         if (code.equals("1")){
-            System.out.printf("Login request ...");
+            System.out.println("Login request ...");
             String user = input.readLine();
             String pass = input.readLine();
             FileHandler p = new FileHandler();
@@ -71,11 +71,24 @@ public class Server {
             output.println(x);
         }
         if (code.equals("2")){
-            System.out.printf("Register request ...");
+            System.out.println("Register request ...");
             String user = input.readLine();
             String pass = input.readLine();
             FileHandler p = new FileHandler();
             int x = p.register(user,pass);
+            output.println(x);
+        }
+        if (code.equals("3")){
+            System.out.println("Get users request ...");
+            FileHandler p = new FileHandler();
+            String x = p.getUsers();
+            output.println(x);
+        }
+        if (code.equals("4")){
+            String name = input.readLine();
+            System.out.println("Get Repositories request ...");
+            FileHandler p = new FileHandler();
+            String x = p.getRepos(name);
             output.println(x);
         }
 
