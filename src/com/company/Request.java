@@ -3,7 +3,7 @@ package com.company;
 import java.io.*;
 import java.net.Socket;
 
-public class RegisterRequest {
+public class Request {
     private Socket socket;
     private BufferedReader read;
     private PrintWriter output;
@@ -14,12 +14,17 @@ public class RegisterRequest {
      * @return result
      * @throws IOException cant read file
      */
-    public int start(String username , String password) throws IOException {
+    public int start(int code , String username , String password) throws IOException {
         socket = new Socket("127.0.0.1", 1234);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
         read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         try {
-            return register(username,password);
+            if (code == 0) {
+                return login(username, password);
+            }else if (code == 1){
+                return register(username,password);
+            }
+            return -1;
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
@@ -27,6 +32,21 @@ public class RegisterRequest {
         finally {
             close();
         }
+    }
+
+    /**
+     * @param username username
+     * @param password password
+     * @return result
+     * @throws IOException cant read file
+     */
+    public int login(String username , String password) throws IOException {
+        output.println("1");
+        output.println(username);
+        output.println(password);
+        output.flush();
+        String response = read.readLine();
+        return Integer.parseInt(response);
     }
 
     /**
