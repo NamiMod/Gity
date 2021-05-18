@@ -18,10 +18,6 @@ public class Client {
 
     private String name;
     private String command;
-    private Socket socket;
-    private BufferedReader read;
-    private PrintWriter output;
-
 
     public Client(String name, String command) throws IOException {
         this.name = name;

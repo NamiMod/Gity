@@ -1,11 +1,16 @@
 package com.company;
 
+import jdk.jshell.execution.Util;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 /**
@@ -25,6 +30,9 @@ public class HomePage {
     private JFrame Home;
     private JLabel icon;
     private JLabel name;
+    private JLabel loginDate;
+    private JLabel Date;
+    private JLabel version;
     private JLabel text_repo;
     private JTextArea view;
     private String username;
@@ -57,28 +65,48 @@ public class HomePage {
      */
     public void HomeElements(){
 
-        Random number = new Random();
-        int image = number.nextInt(4)+1;
         icon = new JLabel();
-        String path = "images/"+image+".png";
-        icon.setIcon(new ImageIcon(path));
-        icon.setSize(150,150);
+        icon.setIcon(new ImageIcon("images/user.png"));
+        icon.setSize(125,125);
         icon.setLocation(0,0);
         Home.add(icon);
 
-        name = new JLabel(username);
-        name.setLocation(200,0);
+        name = new JLabel("User"+" : "+username);
+        name.setLocation(130,0);
         name.setSize(200,70);
         name.setForeground(text);
-        name.setFont(new Font("Arial", Font.PLAIN, 30));
+        name.setFont(new Font("Arial", Font.PLAIN, 15));
         Home.add(name);
+
+        Date = new JLabel("Today's Date"+" : "+ java.time.LocalDate.now());
+        Date.setLocation(130,20);
+        Date.setSize(200,70);
+        Date.setForeground(text);
+        Date.setFont(new Font("Arial", Font.PLAIN, 15));
+        Home.add(Date);
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
+        LocalTime now = LocalTime.now();
+        loginDate = new JLabel("Login"+" : "+ dtf.format(now));
+        loginDate.setLocation(130,40);
+        loginDate.setSize(200,70);
+        loginDate.setForeground(text);
+        loginDate.setFont(new Font("Arial", Font.PLAIN, 15));
+        Home.add(loginDate);
+
+        version = new JLabel("Gity Version"+" : 1.01");
+        version.setLocation(130,60);
+        version.setSize(200,70);
+        version.setForeground(text);
+        version.setFont(new Font("Arial", Font.PLAIN, 15));
+        Home.add(version);
+
 
         view = new JTextArea();
         view.setLocation(400,70);
         view.setSize(298,300);
-        view.setForeground(text);
-        view.setFont(new Font("Arial", Font.PLAIN, 15));
-        view.setEnabled(false);
+        view.setFont(new Font("Arial", Font.PLAIN, 12));
+        view.setEnabled(true);
         view.setBorder(BorderFactory.createMatteBorder(0, 2, 0, 0, line));
         Home.add(view);
 
@@ -112,7 +140,7 @@ public class HomePage {
             public void actionPerformed(ActionEvent e) {
                 try {
                     Client run = new Client(username,command.getText());
-                    view.setText(view.getText()+run.run());
+                    view.setText(run.run());
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
