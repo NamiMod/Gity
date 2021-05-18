@@ -18,6 +18,5 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         LoginAndRegisterPage p = new LoginAndRegisterPage();
-        //HomePage p = new HomePage("nami");
     }
 }
