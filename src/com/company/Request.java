@@ -122,6 +122,20 @@ public class Request {
             close();
         }
     }
+    public int removeContributor(String username,String repoName,String name) throws IOException {
+        socket = new Socket("127.0.0.1", 1235);
+        output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+        read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        try {
+            return remove(username,repoName,name);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+        finally {
+            close();
+        }
+    }
 
     /**
      * @param username username
@@ -198,6 +212,14 @@ public class Request {
         output.println(repoName);
         output.flush();
         return read.readLine();
+    }
+    public int remove(String username , String repoName , String name) throws IOException{
+        output.println("9");
+        output.println(username);
+        output.println(repoName);
+        output.println(name);
+        output.flush();
+        return Integer.parseInt(read.readLine());
     }
 
     /**

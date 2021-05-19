@@ -133,6 +133,21 @@ public class Client {
                 return output;
             }
         }
+        if (command.contains("removec")){
+            int result;
+            String[] data = command.split(" ",3);
+            if (name.equals(data[2])){
+                result = 0;
+            }else {
+                Request req = new Request();
+                result = req.removeContributor(name, data[1], data[2]);
+            }
+            if (result == 1){
+                return "Contributor Removed ! :)";
+            }else {
+                return "Can not remove contributor :( please try again";
+            }
+        }
 
         return "Command Not Found !  \nPlease use help button to see available commands";
 

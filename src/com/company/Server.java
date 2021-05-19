@@ -126,6 +126,15 @@ public class Server {
             output.println(p.getInfo(username,repoName));
 
         }
+        if (code.equals("9")){
+            String username = input.readLine();
+            String repoName = input.readLine();
+            String name = input.readLine();
+            System.out.println("remove contributor request ...");
+            FileHandler p = new FileHandler();
+            int x = p.removeContributor(username,repoName,name);
+            output.println(x);
+        }
 
         output.flush();
         output.close();
