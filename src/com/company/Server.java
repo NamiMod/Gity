@@ -97,7 +97,6 @@ public class Server {
             String repoCode = input.readLine();
             System.out.println("Make new Repository request ...");
             FileHandler p = new FileHandler();
-            System.out.println(username+"\n"+name+"\n"+repoCode);
             int x = p.makeRepo(username,name,Integer.parseInt(repoCode));
             output.println(x);
         }
@@ -109,6 +108,23 @@ public class Server {
             FileHandler p = new FileHandler();
             int x = p.addContributor(username,repoName,name);
             output.println(x);
+        }
+        if (code.equals("7")){
+            String username = input.readLine();
+            String repoName = input.readLine();
+            int mode = Integer.parseInt(input.readLine());
+            System.out.println("Change Repository mode request ...");
+            FileHandler p = new FileHandler();
+            int x = p.changeMode(username,repoName,mode);
+            output.println(x);
+        }
+        if (code.equals("8")){
+            String username = input.readLine();
+            String repoName = input.readLine();
+            System.out.println("get information of Repository request ...");
+            FileHandler p = new FileHandler();
+            output.println(p.getInfo(username,repoName));
+
         }
 
         output.flush();

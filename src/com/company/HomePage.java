@@ -158,9 +158,12 @@ public class HomePage {
         help.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(Home, "You can commit and push your files to a repository " +
-                        "/ create new branch or directory / pull files to your system / see commits /" +
-                        " add contributors / make new repository ", "Gity", JOptionPane.PLAIN_MESSAGE);
+                String help;
+                help = "Commands : \n\nList of Users : ls -u\nRepositories of user : ls -r name_of_user\n" +
+                        "Make new Repository : mkrepo -public(or private) name_of_repository\n" +
+                        "Add new contributor : addc name_of_repo name_of_contributor\n"+
+                        "Change Repository mode : chm name_of_repo public(or private)\n";
+                view.setText(help);
             }
         });
         Home.add(help);

@@ -99,6 +99,41 @@ public class Client {
             }
         }
 
+        if (command.contains("chm")){
+            String[] data = command.split(" ",3);
+            Request req = new Request();
+            int x = 0;
+            if (data[2].equals("private")){
+                x = 2;
+            }
+            if (data[2].equals("public")){
+                x = 1;
+            }
+            int result = req.changeMode(name,data[1],x);
+            if (result == 1){
+                return "Repository changed ! :)";
+            }else {
+                return "Can not change Repository :( please try again";
+            }
+        }
+        if (command.contains("get -i")){
+            String[] data = command.split(" ",3);
+            Request req = new Request();
+            String result = req.getRepoInfo(name , data[2]);
+            if (result.equals("Can not get information :( Please try again")){
+                return "Can not get information :( Please try again";
+            }else {
+                String[] out = result.split(" ");
+                String output = "Information of Repository :\n";
+                output = output + "Mode : " + out[0] + "\n";
+                output = output + "Contributor(s) : \n";
+                for (int i = 1; i < out.length; i++) {
+                    output = output + i + " ) " + out[i] + "\n";
+                }
+                return output;
+            }
+        }
+
         return "Command Not Found !  \nPlease use help button to see available commands";
 
     }

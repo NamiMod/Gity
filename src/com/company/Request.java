@@ -94,6 +94,34 @@ public class Request {
             close();
         }
     }
+    public int changeMode(String username,String repoName,int mode) throws IOException {
+        socket = new Socket("127.0.0.1", 1235);
+        output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+        read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        try {
+            return newMode(username,repoName,mode);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+        finally {
+            close();
+        }
+    }
+    public String getRepoInfo(String username,String repoName) throws IOException {
+        socket = new Socket("127.0.0.1", 1235);
+        output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+        read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        try {
+            return repoInfo(username,repoName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            close();
+        }
+    }
 
     /**
      * @param username username
@@ -154,6 +182,22 @@ public class Request {
         output.println(name);
         output.flush();
         return Integer.parseInt(read.readLine());
+    }
+
+    public int newMode(String username , String repoName , int mode) throws IOException {
+        output.println("7");
+        output.println(username);
+        output.println(repoName);
+        output.println(mode);
+        output.flush();
+        return Integer.parseInt(read.readLine());
+    }
+    public String repoInfo(String username , String repoName) throws IOException{
+        output.println("8");
+        output.println(username);
+        output.println(repoName);
+        output.flush();
+        return read.readLine();
     }
 
     /**

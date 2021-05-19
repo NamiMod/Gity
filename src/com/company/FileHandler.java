@@ -82,9 +82,9 @@ public class FileHandler {
         }
     }
 
-    public String getUsers(){
+    public String getUsers() {
         File file = new File("Data/Server");
-        String result="";
+        String result = "";
         int x = 0;
         String[] directories = file.list(new FilenameFilter() {
             @Override
@@ -94,20 +94,20 @@ public class FileHandler {
         });
         x = directories.length;
         assert directories != null;
-        for (String temp :directories){
+        for (String temp : directories) {
             if (x > 1) {
                 result = result + temp + " ";
-                x=x-1;
-            }else {
+                x = x - 1;
+            } else {
                 result = result + temp;
             }
         }
         return result;
     }
 
-    public String getRepos(String name){
-        File file = new File("Data/Server/"+name);
-        String result="";
+    public String getRepos(String name) {
+        File file = new File("Data/Server/" + name);
+        String result = "";
         int x = 0;
         String[] directories = file.list(new FilenameFilter() {
             @Override
@@ -117,29 +117,29 @@ public class FileHandler {
         });
         x = directories.length;
         assert directories != null;
-        for (String temp :directories){
+        for (String temp : directories) {
             if (x > 1) {
                 result = result + temp + " ";
-                x=x-1;
-            }else {
+                x = x - 1;
+            } else {
                 result = result + temp;
             }
         }
         return result;
     }
 
-    public int makeRepo(String username , String name , int code) throws IOException {
+    public int makeRepo(String username, String name, int code) throws IOException {
         String temp = getRepos(username);
-        if (temp.contains(name)){
+        if (possibleRepo(username,name) == 0) {
             return 0;
         }
-        File client = new File("Data/Server/" + username+"/"+name);
+        File client = new File("Data/Server/" + username + "/" + name);
         boolean bool = client.mkdir();
         if (!bool) {
             System.out.println("Cant create Folder for user");
             return 0;
         }
-        FileWriter fw = new FileWriter("Data/Server/"+username+"/"+name+"/RepoData.txt");
+        FileWriter fw = new FileWriter("Data/Server/" + username + "/" + name + "/RepoData.txt");
         fw.write(code + "\n");
         fw.write("1" + "\n");
         fw.write(username + "\n");
@@ -148,45 +148,77 @@ public class FileHandler {
         return 1;
     }
 
-    public int addContributor(String username,String repoName , String name) throws IOException {
-        if (getUsers().contains(name)){
-            if (getRepos(username).contains(repoName)){
-                FileWriter fw = new FileWriter("Data/Server/"+username+"/"+repoName+"/RepoDataTemp.txt");
-                FileReader fileReader = new FileReader("Data/Server/"+username+"/"+repoName+"/RepoData.txt");
-                Scanner getString = new Scanner(fileReader);
-                while (getString.hasNext()){
-                    String code = getString.nextLine();
-                    fw.write(code+"\n");
-                    String cNumber = getString.nextLine();
-                    fw.write((Integer.parseInt(cNumber)+1) + "\n");
-                    for(int i = 0 ; i < Integer.parseInt(cNumber);i++){
-                        String cName = getString.nextLine();
-                        fw.write(cName+"\n");
-                    }
-                    fw.write(name+"\n");
-                    String coNumber = getString.nextLine();
-                    fw.write(coNumber + "\n");
-                    for(int i = 0 ; i < Integer.parseInt(coNumber);i++){
-                        String coName = getString.nextLine();
-                        fw.write(coName+"\n");
+    public int possibleContributor(String username ,String repoName , String name) throws IOException {
+        if (possibleRepo(username,repoName) == 0) {
+            FileReader fileReader = new FileReader("Data/Server/" + username + "/" + repoName + "/RepoData.txt");
+            Scanner getString = new Scanner(fileReader);
+            while (getString.hasNext()) {
+                String code = getString.nextLine();
+                String cNumber = getString.nextLine();
+                for (int i = 0; i < Integer.parseInt(cNumber); i++) {
+                    String cName = getString.nextLine();
+                    if (cName.equals(name)) {
+                        return 0;
                     }
                 }
-                fw.close();
-                getString.close();
-                fileReader.close();
-                copy(username,repoName);
-                File f= new File("Data/Server/"+username+"/"+repoName+"/RepoDataTemp.txt");
-                f.delete();
-                return 1;
+                String coNumber = getString.nextLine();
+                for (int i = 0; i < Integer.parseInt(coNumber); i++) {
+                    String coName = getString.nextLine();
+                }
             }
-            return 0;
+            getString.close();
+            fileReader.close();
+            return 1;
+        }
+        return 0;
+    }
+    public int possibleRepo(String username ,String repoName) throws IOException {
+        String repos = getRepos(username);
+        String[] data = repos.split("");
+        for(String s : data){
+            if (s.equals(repoName)){
+                return 0;
+            }
+        }
+        return 1;
+    }
+
+    public int addContributor(String username, String repoName, String name) throws IOException {
+        if (getUsers().contains(name) && possibleRepo(username, repoName) == 0 && possibleContributor(username, repoName, name) == 1) {
+            FileWriter fw = new FileWriter("Data/Server/" + username + "/" + repoName + "/RepoDataTemp.txt");
+            FileReader fileReader = new FileReader("Data/Server/" + username + "/" + repoName + "/RepoData.txt");
+            Scanner getString = new Scanner(fileReader);
+            while (getString.hasNext()) {
+                String code = getString.nextLine();
+                fw.write(code + "\n");
+                String cNumber = getString.nextLine();
+                fw.write((Integer.parseInt(cNumber) + 1) + "\n");
+                for (int i = 0; i < Integer.parseInt(cNumber); i++) {
+                    String cName = getString.nextLine();
+                    fw.write(cName + "\n");
+                }
+                fw.write(name + "\n");
+                String coNumber = getString.nextLine();
+                fw.write(coNumber + "\n");
+                for (int i = 0; i < Integer.parseInt(coNumber); i++) {
+                    String coName = getString.nextLine();
+                    fw.write(coName + "\n");
+                }
+            }
+            fw.close();
+            getString.close();
+            fileReader.close();
+            copy(username, repoName);
+            File f = new File("Data/Server/" + username + "/" + repoName + "/RepoDataTemp.txt");
+            f.delete();
+            return 1;
         }
         return 0;
     }
 
-    public void copy(String username , String repoName) throws IOException {
-        FileWriter copy = new FileWriter("Data/Server/"+username+"/"+repoName+"/RepoData.txt", false);
-        FileReader fileReader = new FileReader("Data/Server/"+username+"/"+repoName+"/RepoDataTemp.txt");
+    public void copy(String username, String repoName) throws IOException {
+        FileWriter copy = new FileWriter("Data/Server/" + username + "/" + repoName + "/RepoData.txt", false);
+        FileReader fileReader = new FileReader("Data/Server/" + username + "/" + repoName + "/RepoDataTemp.txt");
         Scanner getString = new Scanner(fileReader);
 
         while (getString.hasNextLine()) {
@@ -196,6 +228,70 @@ public class FileHandler {
         copy.close();
         fileReader.close();
         getString.close();
+    }
+
+    public int changeMode(String username, String repoName, int mode) throws IOException {
+
+        if (getRepos(username).contains(repoName)) {
+            FileWriter fw = new FileWriter("Data/Server/" + username + "/" + repoName + "/RepoDataTemp.txt");
+            FileReader fileReader = new FileReader("Data/Server/" + username + "/" + repoName + "/RepoData.txt");
+            Scanner getString = new Scanner(fileReader);
+            while (getString.hasNext()) {
+                String code = getString.nextLine();
+                fw.write(mode + "\n");
+                String cNumber = getString.nextLine();
+                fw.write(cNumber + "\n");
+                for (int i = 0; i < Integer.parseInt(cNumber); i++) {
+                    String cName = getString.nextLine();
+                    fw.write(cName + "\n");
+                }
+                String coNumber = getString.nextLine();
+                fw.write(coNumber + "\n");
+                for (int i = 0; i < Integer.parseInt(coNumber); i++) {
+                    String coName = getString.nextLine();
+                    fw.write(coName + "\n");
+                }
+            }
+            fw.close();
+            getString.close();
+            fileReader.close();
+            copy(username, repoName);
+            File f = new File("Data/Server/" + username + "/" + repoName + "/RepoDataTemp.txt");
+            f.delete();
+            return 1;
+        }
+        return 0;
+    }
+    public String getInfo(String username , String repoName) throws IOException {
+        if (possibleRepo(username, repoName) == 0){
+            String result = "";
+            FileReader fileReader = new FileReader("Data/Server/" + username + "/" + repoName + "/RepoData.txt");
+            Scanner getString = new Scanner(fileReader);
+            while (getString.hasNext()) {
+                String code = getString.nextLine();
+                if (code.equals("1")){
+                    result = result+"public ";
+                }
+                if (code.equals("2")){
+                    result = result+"private ";
+                }
+                String cNumber = getString.nextLine();
+                for (int i = 0; i < Integer.parseInt(cNumber)-1; i++) {
+                    String cName = getString.nextLine();
+                    result = result + cName+" ";
+                }
+                String cName = getString.nextLine();
+                result = result + cName;
+                String coNumber = getString.nextLine();
+                for (int i = 0; i < Integer.parseInt(coNumber); i++) {
+                    String coName = getString.nextLine();
+                }
+            }
+            getString.close();
+            fileReader.close();
+            return result;
+        }
+        return "Can not get information :( Please try again";
     }
 
 }
