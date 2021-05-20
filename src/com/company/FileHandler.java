@@ -332,4 +332,43 @@ public class FileHandler {
         return 0;
     }
 
+    public int addDir(String username , String repoName , String name) throws IOException {
+        if (possibleRepo(username,repoName) == 0){
+            File server = new File("Data/Server/" + username + "/" + repoName + "/"+name);
+            boolean bool = server.mkdir();
+            if (!bool) {
+                return 0;
+            }
+            return 1;
+        }
+        return 0;
+    }
+    public String getCommits(String username , String repoName , String user) throws IOException {
+        if (possibleRepo(user,repoName) == 0 && possibleContributor(user,repoName,username) == 0){
+            String result = "";
+            FileReader fileReader = new FileReader("Data/Server/" + user + "/" + repoName + "/RepoData.txt");
+            Scanner getString = new Scanner(fileReader);
+            while (getString.hasNext()) {
+                String code = getString.nextLine();
+                String cNumber = getString.nextLine();
+                for (int i = 0; i < Integer.parseInt(cNumber); i++) {
+                    String cName = getString.nextLine();
+                }
+                String coNumber = getString.nextLine();
+                if (Integer.parseInt(coNumber) != 0) {
+                    for (int i = 0; i < Integer.parseInt(coNumber) - 1; i++) {
+                        String coName = getString.nextLine();
+                        result = result + coName + " ";
+                    }
+                    String coName = getString.nextLine();
+                    result = result + coName;
+                }
+            }
+            getString.close();
+            fileReader.close();
+            return result;
+        }
+        return "";
+    }
+
 }

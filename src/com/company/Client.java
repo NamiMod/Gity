@@ -148,6 +148,34 @@ public class Client {
                 return "Can not remove contributor :( please try again";
             }
         }
+        if (command.contains("mkdir")){
+            String[] data = command.split(" ",3);
+            Request req = new Request();
+            int result = req.makeDir(name,data[1],data[2]);
+            if (result == 1){
+                return "Directory created ! :)";
+            }else {
+                return "Can not create directory :( please try again";
+            }
+
+        }
+        if (command.contains("get -c")) {
+            String[] data = command.split(" ", 4);
+            Request req = new Request();
+            String result = req.getCommits(name, data[2],data[3]);
+            if (result.equals("")) {
+                return "Can not get commits of Repository ! :( Please Try again";
+            } else {
+                String[] out = result.split(" ");
+                String output = "Commits : \n";
+                int i = 1;
+                for (String s : out) {
+                    output = output + i + " ) " + s + "\n";
+                    i++;
+                }
+                return output;
+            }
+        }
 
         return "Command Not Found !  \nPlease use help button to see available commands";
 

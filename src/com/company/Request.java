@@ -136,6 +136,34 @@ public class Request {
             close();
         }
     }
+    public int makeDir(String username,String repoName,String name) throws IOException {
+        socket = new Socket("127.0.0.1", 1235);
+        output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+        read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        try {
+            return newDir(username,repoName,name);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+        finally {
+            close();
+        }
+    }
+    public String getCommits(String username,String repoName,String user) throws IOException {
+        socket = new Socket("127.0.0.1", 1235);
+        output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+        read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        try {
+            return getRepoCommits(username,repoName,user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            close();
+        }
+    }
 
     /**
      * @param username username
@@ -220,6 +248,22 @@ public class Request {
         output.println(name);
         output.flush();
         return Integer.parseInt(read.readLine());
+    }
+    public int newDir(String username , String repoName , String name) throws IOException{
+        output.println("10");
+        output.println(username);
+        output.println(repoName);
+        output.println(name);
+        output.flush();
+        return Integer.parseInt(read.readLine());
+    }
+    public String getRepoCommits(String username , String repoName , String user) throws IOException {
+        output.println("11");
+        output.println(username);
+        output.println(repoName);
+        output.println(user);
+        output.flush();
+        return read.readLine();
     }
 
     /**

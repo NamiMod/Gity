@@ -135,6 +135,24 @@ public class Server {
             int x = p.removeContributor(username,repoName,name);
             output.println(x);
         }
+        if (code.equals("10")){
+            String username = input.readLine();
+            String repoName = input.readLine();
+            String name = input.readLine();
+            System.out.println("new directory request ...");
+            FileHandler p = new FileHandler();
+            int x = p.addDir(username,repoName,name);
+            output.println(x);
+        }
+        if (code.equals("11")){
+            String username = input.readLine();
+            String repoName = input.readLine();
+            String user = input.readLine();
+            System.out.println("get Commits request ...");
+            FileHandler p = new FileHandler();
+            String x = p.getCommits(username,repoName,user);
+            output.println(x);
+        }
 
         output.flush();
         output.close();
