@@ -45,7 +45,7 @@ public class Server {
             input = new BufferedReader(new InputStreamReader(client.getInputStream()));
             output = new PrintWriter(new OutputStreamWriter(client.getOutputStream()));
             try {
-                handle();
+                handle(client);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -58,7 +58,7 @@ public class Server {
      * @throws IOException cant read files
      */
 
-    public int handle() throws IOException {
+    public int handle(Socket server) throws IOException {
 
         String code = input.readLine();
 
@@ -153,12 +153,43 @@ public class Server {
             String x = p.getCommits(username,repoName,user);
             output.println(x);
         }
+        if (code.equals("12")) {
+            String username = input.readLine();
+            String repoName = input.readLine();
+            String user = input.readLine();
+            System.out.println("can you commit ? request ...");
+            FileHandler p = new FileHandler();
+            int x = p.possibleCommit(username,repoName,user);
+            output.println(x);
+        }
+        if (code.equals("13")){
+            String username = input.readLine();
+            String message = input.readLine();
+            String repoAddress = input.readLine();
+            String user = input.readLine();
+            String fileAddress = input.readLine();
+            String fileName = input.readLine();
+            System.out.println("push request ...");
+            FileHandler p = new FileHandler();
+            p.addCommit(username,message,repoAddress,user,fileAddress,fileName);
+            BufferedInputStream bis = new BufferedInputStream(server.getInputStream());
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream("Data/Server/"+user+"/"+repoAddress+"/"+fileName));
+            byte[] b = new byte[1024 * 8];
+            int len;
+            while ((len = bis.read(b)) != -1) {
+                bos.write(b, 0, len);
+            }
+            bos.close();
+            bis.close();
+            System.out.println("Upload succeeded");
+        }
 
         output.flush();
         output.close();
         return 0;
 
     }
+
 
 
 }

@@ -176,7 +176,18 @@ public class Client {
                 return output;
             }
         }
-
+        if (command.contains("c&p")) {
+            String[] data = command.split(" ", 6);
+            String[] repo = data[2].split("/");
+            Request req = new Request();
+            int result = req.possibleCommit(name, repo[0], data[3]);
+            if (result == 1){
+                req.sendFile(name,data[1],data[2],data[3],data[4],data[5]);
+                return "Done ! :)";
+            }else {
+                return "can not commit ! :( Please try again ";
+            }
+        }
         return "Command Not Found !  \nPlease use help button to see available commands";
 
     }

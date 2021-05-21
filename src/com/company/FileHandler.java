@@ -175,7 +175,7 @@ public class FileHandler {
 
     public int possibleRepo(String username, String repoName) throws IOException {
         String repos = getRepos(username);
-        String[] data = repos.split("");
+        String[] data = repos.split(" ");
         for (String s : data) {
             if (s.equals(repoName)) {
                 return 0;
@@ -369,6 +369,63 @@ public class FileHandler {
             return result;
         }
         return "";
+    }
+
+    public int possibleCommit(String username ,String repoName , String user) throws IOException {
+        if (possibleRepo(user,repoName) == 0 && possibleContributor(user,repoName,username) == 0){
+            FileReader fileReader = new FileReader("Data/Server/" + user + "/" + repoName + "/RepoData.txt");
+            Scanner getString = new Scanner(fileReader);
+            while (getString.hasNext()) {
+                String code = getString.nextLine();
+                String cNumber = getString.nextLine();
+                for (int i = 0; i < Integer.parseInt(cNumber); i++) {
+                    String cName = getString.nextLine();
+                    if (cName.equals(username)){
+                        return 1;
+                    }
+                }
+                String coNumber = getString.nextLine();
+                if (Integer.parseInt(coNumber) != 0) {
+                    for (int i = 0; i < Integer.parseInt(coNumber) - 1; i++) {
+                        String coName = getString.nextLine();
+                    }
+                    String coName = getString.nextLine();
+                }
+            }
+            getString.close();
+            fileReader.close();
+        }
+        return 0;
+    }
+    public void addCommit(String username,String message ,String repoAddress, String user , String fileAddress , String fileName) throws IOException {
+        String[] repo = repoAddress.split("/");
+        String repoName = repo[0];
+        FileWriter fw = new FileWriter("Data/Server/" + user + "/" + repoName + "/RepoDataTemp.txt");
+        FileReader fileReader = new FileReader("Data/Server/" + user + "/" + repoName + "/RepoData.txt");
+        Scanner getString = new Scanner(fileReader);
+        while (getString.hasNext()) {
+            String code = getString.nextLine();
+            fw.write(code + "\n");
+            String cNumber = getString.nextLine();
+            fw.write(cNumber + "\n");
+            for (int i = 0; i < Integer.parseInt(cNumber); i++) {
+                String cName = getString.nextLine();
+                fw.write(cName + "\n");
+            }
+            String coNumber = getString.nextLine();
+            fw.write((Integer.parseInt(coNumber)+1) + "\n");
+            for (int i = 0; i < Integer.parseInt(coNumber); i++) {
+                String coName = getString.nextLine();
+                fw.write(coName + "\n");
+            }
+            fw.write(username +":"+ message + "\n");
+        }
+        fw.close();
+        getString.close();
+        fileReader.close();
+        copy(user, repoName);
+        File f = new File("Data/Server/" + user + "/" + repoName + "/RepoDataTemp.txt");
+        f.delete();
     }
 
 }

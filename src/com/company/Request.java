@@ -14,22 +14,21 @@ public class Request {
      * @return result
      * @throws IOException cant read file
      */
-    public int login_Register(int code , String username , String password) throws IOException {
+    public int login_Register(int code, String username, String password) throws IOException {
         socket = new Socket("127.0.0.1", 1235);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
         read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         try {
             if (code == 0) {
                 return login(username, password);
-            }else if (code == 1){
-                return register(username,password);
+            } else if (code == 1) {
+                return register(username, password);
             }
             return -1;
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
-        }
-        finally {
+        } finally {
             close();
         }
     }
@@ -44,8 +43,7 @@ public class Request {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        }
-        finally {
+        } finally {
             close();
         }
     }
@@ -59,108 +57,149 @@ public class Request {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        }
-        finally {
+        } finally {
             close();
         }
     }
 
-    public int makeRepo(String username,String name,int code) throws IOException {
+    public int makeRepo(String username, String name, int code) throws IOException {
         socket = new Socket("127.0.0.1", 1235);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
         read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         try {
-            return newRepo(username,name,code);
+            return newRepo(username, name, code);
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
-        }
-        finally {
+        } finally {
             close();
         }
     }
 
-    public int addContributor(String username,String repoName,String name) throws IOException {
+    public int addContributor(String username, String repoName, String name) throws IOException {
         socket = new Socket("127.0.0.1", 1235);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
         read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         try {
-            return newContributor(username,repoName,name);
+            return newContributor(username, repoName, name);
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
-        }
-        finally {
+        } finally {
             close();
         }
     }
-    public int changeMode(String username,String repoName,int mode) throws IOException {
+
+    public int changeMode(String username, String repoName, int mode) throws IOException {
         socket = new Socket("127.0.0.1", 1235);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
         read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         try {
-            return newMode(username,repoName,mode);
+            return newMode(username, repoName, mode);
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
-        }
-        finally {
+        } finally {
             close();
         }
     }
-    public String getRepoInfo(String username,String repoName) throws IOException {
+
+    public String getRepoInfo(String username, String repoName) throws IOException {
         socket = new Socket("127.0.0.1", 1235);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
         read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         try {
-            return repoInfo(username,repoName);
+            return repoInfo(username, repoName);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        }
-        finally {
+        } finally {
             close();
         }
     }
-    public int removeContributor(String username,String repoName,String name) throws IOException {
+
+    public int removeContributor(String username, String repoName, String name) throws IOException {
         socket = new Socket("127.0.0.1", 1235);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
         read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         try {
-            return remove(username,repoName,name);
+            return remove(username, repoName, name);
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
-        }
-        finally {
+        } finally {
             close();
         }
     }
-    public int makeDir(String username,String repoName,String name) throws IOException {
+
+    public int makeDir(String username, String repoName, String name) throws IOException {
         socket = new Socket("127.0.0.1", 1235);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
         read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         try {
-            return newDir(username,repoName,name);
+            return newDir(username, repoName, name);
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
-        }
-        finally {
+        } finally {
             close();
         }
     }
-    public String getCommits(String username,String repoName,String user) throws IOException {
+
+    public String getCommits(String username, String repoName, String user) throws IOException {
         socket = new Socket("127.0.0.1", 1235);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
         read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         try {
-            return getRepoCommits(username,repoName,user);
+            return getRepoCommits(username, repoName, user);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        } finally {
+            close();
         }
-        finally {
+    }
+    public int possibleCommit(String username, String repoName, String user) throws IOException {
+        socket = new Socket("127.0.0.1", 1235);
+        output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+        read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        try {
+            return commit(username, repoName, user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        } finally {
+            close();
+        }
+    }
+    public void sendFile(String username,String message ,String repoAddress, String user , String fileAddress , String fileName) throws IOException {
+        socket = new Socket("127.0.0.1", 1235);
+        output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+        read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        try {
+            output.println("13");
+            output.println(username);
+            output.println(message);
+            output.println(repoAddress);
+            output.println(user);
+            output.println(fileAddress);
+            output.println(fileName);
+            output.flush();
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(fileAddress+"/"+fileName));
+            BufferedOutputStream bos = new BufferedOutputStream(socket.getOutputStream());
+            byte[] b = new byte[1024 * 8];
+            int len;
+            while ((len = bis.read(b)) != -1) {
+                bos.write(b, 0, len);
+                bos.flush();
+            }
+            System.out.println("File uploaded");
+            bos.close();
+            bis.close();
+            System.out.println("File upload completed");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
             close();
         }
     }
@@ -264,6 +303,14 @@ public class Request {
         output.println(user);
         output.flush();
         return read.readLine();
+    }
+    public int commit(String username , String repoName , String user)throws IOException{
+        output.println("12");
+        output.println(username);
+        output.println(repoName);
+        output.println(user);
+        output.flush();
+        return Integer.parseInt(read.readLine());
     }
 
     /**
