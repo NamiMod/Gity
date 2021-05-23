@@ -26,16 +26,16 @@ public class Client {
 
     public String run() throws IOException {
 
-        if (command.contains("ls -u")){
+        if (command.contains("ls -u")) {
             Request req = new Request();
             String result = req.getUsers();
-            String temp="Gity Users : \n\n1 ) ";
-            int i=2;
-            for(char c : result.toCharArray()){
-                if (c !=' '){
-                    temp=temp+c;
-                }else {
-                    temp=temp+"\n"+i+" ) ";
+            String temp = "Gity Users : \n\n1 ) ";
+            int i = 2;
+            for (char c : result.toCharArray()) {
+                if (c != ' ') {
+                    temp = temp + c;
+                } else {
+                    temp = temp + "\n" + i + " ) ";
                     i++;
                 }
             }
@@ -67,62 +67,62 @@ public class Client {
         }
 
         if (command.contains("mkrepo")) {
-            int code = 1 ;
+            int code = 1;
             String[] data = command.split(" ", 3);
-            if (data[1].equals("-public")){
+            if (data[1].equals("-public")) {
                 code = 1;
             }
-            if (data[1].equals("-private")){
+            if (data[1].equals("-private")) {
                 code = 2;
             }
             if (data[2].contains(" ")) {
                 return "Please don't use space in name of repository";
             } else {
                 Request req = new Request();
-                int result = req.makeRepo(name, data[2],code);
-                if (result == 0){
+                int result = req.makeRepo(name, data[2], code);
+                if (result == 0) {
                     return "Can not create repository ! :(\nPlease Try again";
-                }else {
-                    return "Repository Created successfully ! :)" ;
+                } else {
+                    return "Repository Created successfully ! :)";
                 }
             }
         }
 
-        if (command.contains("addc")){
+        if (command.contains("addc")) {
             String[] data = command.split(" ", 3);
             Request req = new Request();
-            int result = req.addContributor(name,data[1],data[2]);
-            if (result == 1){
+            int result = req.addContributor(name, data[1], data[2]);
+            if (result == 1) {
                 return "Contributor added successfully ! :)";
-            }else {
+            } else {
                 return "Can not add contributor :( please try again";
             }
         }
 
-        if (command.contains("chm")){
-            String[] data = command.split(" ",3);
+        if (command.contains("chm")) {
+            String[] data = command.split(" ", 3);
             Request req = new Request();
             int x = 0;
-            if (data[2].equals("private")){
+            if (data[2].equals("private")) {
                 x = 2;
             }
-            if (data[2].equals("public")){
+            if (data[2].equals("public")) {
                 x = 1;
             }
-            int result = req.changeMode(name,data[1],x);
-            if (result == 1){
+            int result = req.changeMode(name, data[1], x);
+            if (result == 1) {
                 return "Repository changed ! :)";
-            }else {
+            } else {
                 return "Can not change Repository :( please try again";
             }
         }
-        if (command.contains("get -i")){
-            String[] data = command.split(" ",3);
+        if (command.contains("get -i")) {
+            String[] data = command.split(" ", 3);
             Request req = new Request();
-            String result = req.getRepoInfo(name , data[2]);
-            if (result.equals("Can not get information :( Please try again")){
+            String result = req.getRepoInfo(name, data[2]);
+            if (result.equals("Can not get information :( Please try again")) {
                 return "Can not get information :( Please try again";
-            }else {
+            } else {
                 String[] out = result.split(" ");
                 String output = "Information of Repository :\n";
                 output = output + "Mode : " + out[0] + "\n";
@@ -133,28 +133,28 @@ public class Client {
                 return output;
             }
         }
-        if (command.contains("removec")){
+        if (command.contains("removec")) {
             int result;
-            String[] data = command.split(" ",3);
-            if (name.equals(data[2])){
+            String[] data = command.split(" ", 3);
+            if (name.equals(data[2])) {
                 result = 0;
-            }else {
+            } else {
                 Request req = new Request();
                 result = req.removeContributor(name, data[1], data[2]);
             }
-            if (result == 1){
+            if (result == 1) {
                 return "Contributor Removed ! :)";
-            }else {
+            } else {
                 return "Can not remove contributor :( please try again";
             }
         }
-        if (command.contains("mkdir")){
-            String[] data = command.split(" ",3);
+        if (command.contains("mkdir")) {
+            String[] data = command.split(" ", 3);
             Request req = new Request();
-            int result = req.makeDir(name,data[1],data[2]);
-            if (result == 1){
+            int result = req.makeDir(name, data[1], data[2]);
+            if (result == 1) {
                 return "Directory created ! :)";
-            }else {
+            } else {
                 return "Can not create directory :( please try again";
             }
 
@@ -162,7 +162,7 @@ public class Client {
         if (command.contains("get -c")) {
             String[] data = command.split(" ", 4);
             Request req = new Request();
-            String result = req.getCommits(name, data[2],data[3]);
+            String result = req.getCommits(name, data[2], data[3]);
             if (result.equals("")) {
                 return "Can not get commits of Repository ! :( Please Try again";
             } else {
@@ -181,11 +181,51 @@ public class Client {
             String[] repo = data[2].split("/");
             Request req = new Request();
             int result = req.possibleCommit(name, repo[0], data[3]);
-            if (result == 1){
-                req.sendFile(name,data[1],data[2],data[3],data[4],data[5]);
+            if (result == 1) {
+                req.sendFile(name, data[1], data[2], data[3], data[4], data[5]);
                 return "Done ! :)";
-            }else {
+            } else {
                 return "can not commit ! :( Please try again ";
+            }
+        }
+        if (command.contains("pull")) {
+            String[] data = command.split(" ", 3);
+            Request req = new Request();
+            int result = req.possiblePull(name, data[1], data[2]);
+            if (result == 1) {
+                req.pull(name, data[1], data[2]);
+                return "Done ! :)";
+            } else {
+                return "can not pull ! :( Please try again ";
+            }
+        }
+        if (command.contains("download")) {
+            String[] data = command.split(" ", 4);
+            Request req = new Request();
+            int result = req.possibleDownload(name, data[1], data[2], data[3]);
+            if (result == 1) {
+                req.download(name, data[1], data[2], data[3]);
+                return "Done ! :)";
+            } else {
+                return "can not download file ! :( Please try again ";
+            }
+        }
+        if (command.contains("update")) {
+            String[] data = command.split(" ", 3);
+            Request req = new Request();
+            int result = req.possiblePull(name, data[1], data[2]);
+            if (result == 1) {
+                int x = req.needUpdate(name, data[1], data[2]);
+                if (x == 1) {
+                    req.pull(name, data[1], data[2]);
+                    return "Done ! :)";
+                } else if (x == 2) {
+                    return "already updated !";
+                }else {
+                    return "can not get from server ! ...";
+                }
+            } else {
+                return "can not update ! :( Please try again ";
             }
         }
         return "Command Not Found !  \nPlease use help button to see available commands";

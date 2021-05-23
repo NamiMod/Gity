@@ -2,6 +2,7 @@ package com.company;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Request {
     private Socket socket;
@@ -203,6 +204,128 @@ public class Request {
             close();
         }
     }
+    public int possiblePull(String username, String repoName, String user) throws IOException {
+        socket = new Socket("127.0.0.1", 1235);
+        output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+        read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        try {
+            return pPull(username, repoName, user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        } finally {
+            close();
+        }
+    }
+    public void pull(String username , String repoName , String name) throws IOException {
+        socket = new Socket("127.0.0.1", 1235);
+        output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+        read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        try {
+            output.println("15");
+            output.println(name);
+            output.println(repoName);
+            output.flush();
+            //ToDo get files
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close();
+        }
+    }
+    public int possibleDownload(String username, String repoName, String user , String fileName) throws IOException {
+        socket = new Socket("127.0.0.1", 1235);
+        output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+        read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        try {
+            return pDownload(username, repoName, user,fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        } finally {
+            close();
+        }
+    }
+    public void download(String username , String repoName , String name , String fileName) throws IOException {
+        socket = new Socket("127.0.0.1", 1235);
+        output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+        read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        try {
+            output.println("17");
+            output.println(name);
+            output.println(repoName);
+            output.println(fileName);
+            output.flush();
+
+            File file = new File("Data/Client/" + username);
+            String[] directories = file.list(new FilenameFilter() {
+                @Override
+                public boolean accept(File current, String name) {
+                    return new File(current, name).isDirectory();
+                }
+            });
+            int y = 0;
+            assert directories != null;
+            for (String temp : directories) {
+                if (repoName.equals(temp)){
+                    y = 1;
+                }
+            }
+            if (y == 0){
+                File client = new File("Data/Client/" + username+"/"+repoName);
+                boolean bool = client.mkdir();
+            }
+            BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream("Data/Client/"+username+"/"+repoName+"/"+fileName));
+            byte[] b = new byte[1024 * 8];
+            int len;
+            while ((len = bis.read(b)) != -1) {
+                bos.write(b, 0, len);
+            }
+            bos.close();
+            bis.close();
+            System.out.println("Download succeeded");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close();
+        }
+    }
+    public int needUpdate(String username , String repoName , String name) throws IOException {
+        FileReader fileReader = new FileReader("Data/Client/" + username + "/" + repoName + "/RepoData.txt");
+        Scanner getString = new Scanner(fileReader);
+        String coNumber="";
+        while (getString.hasNext()) {
+            String code = getString.nextLine();
+            String cNumber = getString.nextLine();
+            for (int i = 0; i < Integer.parseInt(cNumber); i++) {
+                String cName = getString.nextLine();
+            }
+            coNumber = getString.nextLine();
+            for (int i = 0; i < Integer.parseInt(coNumber); i++) {
+                 String coName = getString.nextLine();
+            }
+        }
+        getString.close();
+        fileReader.close();
+        socket = new Socket("127.0.0.1", 1235);
+        output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+        read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        try {
+            output.println("18");
+            output.println(name);
+            output.println(repoName);
+            output.println(coNumber);
+            output.flush();
+            return Integer.parseInt(read.readLine());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        } finally {
+            close();
+        }
+    }
 
     /**
      * @param username username
@@ -309,6 +432,23 @@ public class Request {
         output.println(username);
         output.println(repoName);
         output.println(user);
+        output.flush();
+        return Integer.parseInt(read.readLine());
+    }
+    public int pPull(String username , String repoName , String user)throws IOException{
+        output.println("14");
+        output.println(username);
+        output.println(repoName);
+        output.println(user);
+        output.flush();
+        return Integer.parseInt(read.readLine());
+    }
+    public int pDownload(String username , String repoName , String user , String fileName)throws IOException{
+        output.println("16");
+        output.println(username);
+        output.println(repoName);
+        output.println(user);
+        output.println(fileName);
         output.flush();
         return Integer.parseInt(read.readLine());
     }

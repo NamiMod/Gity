@@ -81,6 +81,16 @@ public class FileHandler {
             return -1;
         }
     }
+    public int isUser(String name) throws FileNotFoundException {
+        FileReader fileReader = new FileReader("Data/Data.txt");
+        Scanner getString = new Scanner(fileReader);
+        while (getString.hasNextLine()) {
+            if (getString.nextLine().equals(name)) {
+                return 1;
+            }
+        }
+        return 0;
+    }
 
     public String getUsers() {
         File file = new File("Data/Server");
@@ -105,9 +115,12 @@ public class FileHandler {
         return result;
     }
 
-    public String getRepos(String name) {
-        File file = new File("Data/Server/" + name);
+    public String getRepos(String name) throws FileNotFoundException {
         String result = "";
+        if (isUser(name) == 0){
+            return result;
+        }
+        File file = new File("Data/Server/" + name);
         int x = 0;
         String[] directories = file.list(new FilenameFilter() {
             @Override
@@ -174,6 +187,11 @@ public class FileHandler {
     }
 
     public int possibleRepo(String username, String repoName) throws IOException {
+        if (isUser(username) == 0){
+            return 0;
+        }
+        FileReader fileReader = new FileReader("Data/Data.txt");
+        Scanner getString = new Scanner(fileReader);
         String repos = getRepos(username);
         String[] data = repos.split(" ");
         for (String s : data) {
@@ -233,7 +251,7 @@ public class FileHandler {
 
     public int changeMode(String username, String repoName, int mode) throws IOException {
 
-        if (getRepos(username).contains(repoName)) {
+        if (possibleRepo(username,repoName) == 0) {
             FileWriter fw = new FileWriter("Data/Server/" + username + "/" + repoName + "/RepoDataTemp.txt");
             FileReader fileReader = new FileReader("Data/Server/" + username + "/" + repoName + "/RepoData.txt");
             Scanner getString = new Scanner(fileReader);
@@ -426,6 +444,52 @@ public class FileHandler {
         copy(user, repoName);
         File f = new File("Data/Server/" + user + "/" + repoName + "/RepoDataTemp.txt");
         f.delete();
+    }
+    public int possiblePull(String username , String repoName , String user) throws IOException {
+        int p = 0;
+        if (possibleRepo(user,repoName) == 0){
+            FileReader fileReader = new FileReader("Data/Server/" + user + "/" + repoName + "/RepoData.txt");
+            Scanner getString = new Scanner(fileReader);
+            while (getString.hasNext()) {
+                int code = Integer.parseInt(getString.nextLine());
+                if (code == 1){
+                    p = 1;
+                    break;
+                }
+                String cNumber = getString.nextLine();
+                for (int i = 0; i < Integer.parseInt(cNumber); i++) {
+                    String cName = getString.nextLine();
+                    if (code == 2 && cName.equals(username)){
+                        p = 1;
+                        break;
+                    }
+                }
+                String coNumber = getString.nextLine();
+                for (int i = 0; i < Integer.parseInt(coNumber); i++) {
+                    String coName = getString.nextLine();
+                }
+            }
+            getString.close();
+            fileReader.close();
+        }
+        if (p == 0){
+            return 0;
+        }
+        return 1;
+    }
+    public int possibleDownload(String username , String repoName , String user , String fileName) throws IOException {
+        if (possiblePull(username,repoName,user) == 1){
+            String[] pathNames;
+            File f = new File("Data/Server/"+user+"/"+repoName);
+            pathNames = f.list();
+            assert pathNames != null;
+            for (String pathname : pathNames) {
+                if (fileName.equals(pathname)){
+                    return 1;
+                }
+            }
+        }
+        return 0;
     }
 
 }

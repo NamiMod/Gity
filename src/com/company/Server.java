@@ -3,6 +3,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -182,6 +183,67 @@ public class Server {
             bos.close();
             bis.close();
             System.out.println("Upload succeeded");
+        }
+        if (code.equals("14")){
+            String username = input.readLine();
+            String repoName = input.readLine();
+            String user = input.readLine();
+            System.out.println("pull request ...");
+            FileHandler p = new FileHandler();
+            output.println(p.possiblePull(username,repoName,user));
+        }
+        if (code.equals("15")){
+            String username = input.readLine();
+            String repoName = input.readLine();
+            // ToDo send files
+        }
+        if (code.equals("16")){
+            String username = input.readLine();
+            String repoName = input.readLine();
+            String user = input.readLine();
+            String fileName = input.readLine();
+            FileHandler p = new FileHandler();
+            output.println(p.possibleDownload(username,repoName,user,fileName));
+        }
+        if (code.equals("17")){
+            String username = input.readLine();
+            String repoName = input.readLine();
+            String fileName = input.readLine();
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream("Data/Server/"+username+"/"+repoName+"/"+fileName));
+            BufferedOutputStream bos = new BufferedOutputStream(server.getOutputStream());
+            byte[] b = new byte[1024 * 8];
+            int len;
+            while ((len = bis.read(b)) != -1) {
+                bos.write(b, 0, len);
+                bos.flush();
+            }
+            System.out.println("File uploaded");
+            bos.close();
+            bis.close();
+            System.out.println("File upload completed");
+        }
+        if (code.equals("18")){
+            String username = input.readLine();
+            String repoName = input.readLine();
+            String commit_number = input.readLine();
+            FileReader fileReader = new FileReader("Data/Server/" + username + "/" + repoName + "/RepoData.txt");
+            Scanner getString = new Scanner(fileReader);
+            while (getString.hasNext()) {
+                code = getString.nextLine();
+                String cNumber = getString.nextLine();
+                for (int i = 0; i < Integer.parseInt(cNumber); i++) {
+                    String cName = getString.nextLine();
+                }
+                String coNumber = getString.nextLine();
+                if (commit_number.equals(coNumber)){
+                    output.println(2);
+                }else {
+                    output.println(1);
+                }
+                break;
+            }
+            getString.close();
+            fileReader.close();
         }
 
         output.flush();
