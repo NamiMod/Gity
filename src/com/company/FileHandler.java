@@ -81,6 +81,13 @@ public class FileHandler {
             return -1;
         }
     }
+
+    /**
+     * is user in our users ?
+     * @param name user
+     * @return yes ot no
+     * @throws FileNotFoundException can not open file
+     */
     public int isUser(String name) throws FileNotFoundException {
         FileReader fileReader = new FileReader("Data/Data.txt");
         Scanner getString = new Scanner(fileReader);
@@ -92,6 +99,10 @@ public class FileHandler {
         return 0;
     }
 
+    /**
+     * get users
+     * @return users
+     */
     public String getUsers() {
         File file = new File("Data/Server");
         String result = "";
@@ -115,6 +126,12 @@ public class FileHandler {
         return result;
     }
 
+    /**
+     * get repositories of user
+     * @param name user
+     * @return list of repositories
+     * @throws FileNotFoundException can not open files
+     */
     public String getRepos(String name) throws FileNotFoundException {
         String result = "";
         if (isUser(name) == 0){
@@ -141,6 +158,14 @@ public class FileHandler {
         return result;
     }
 
+    /**
+     * create new repository
+     * @param username username of creator
+     * @param name name od repository
+     * @param code public or private
+     * @return possible or not
+     * @throws IOException can not open file
+     */
     public int makeRepo(String username, String name, int code) throws IOException {
         String temp = getRepos(username);
         if (possibleRepo(username, name) == 0) {
@@ -167,6 +192,14 @@ public class FileHandler {
         return 1;
     }
 
+    /**
+     * is user in contributors ?
+     * @param username username
+     * @param repoName name of repository
+     * @param name name of user for repository
+     * @return yes or no
+     * @throws IOException can not open files
+     */
     public int possibleContributor(String username, String repoName, String name) throws IOException {
         if (possibleRepo(username, repoName) == 0) {
             FileReader fileReader = new FileReader("Data/Server/" + username + "/" + repoName + "/RepoData.txt");
@@ -192,6 +225,13 @@ public class FileHandler {
         return 0;
     }
 
+    /**
+     * can we add new repository ?
+     * @param username username
+     * @param repoName repository name
+     * @return yes or no
+     * @throws IOException can not open files
+     */
     public int possibleRepo(String username, String repoName) throws IOException {
         if (isUser(username) == 0){
             return 0;
@@ -208,6 +248,14 @@ public class FileHandler {
         return 1;
     }
 
+    /**
+     * add new contributor
+     * @param username username
+     * @param repoName repo name
+     * @param name name of use for repo
+     * @return yes or no
+     * @throws IOException can not read or write in file
+     */
     public int addContributor(String username, String repoName, String name) throws IOException {
         if (getUsers().contains(name) && possibleRepo(username, repoName) == 0 && possibleContributor(username, repoName, name) == 1) {
             FileWriter fw = new FileWriter("Data/Server/" + username + "/" + repoName + "/RepoDataTemp.txt");
@@ -241,6 +289,12 @@ public class FileHandler {
         return 0;
     }
 
+    /**
+     * copy two file
+     * @param username username
+     * @param repoName repo name
+     * @throws IOException
+     */
     public void copy(String username, String repoName) throws IOException {
         FileWriter copy = new FileWriter("Data/Server/" + username + "/" + repoName + "/RepoData.txt", false);
         FileReader fileReader = new FileReader("Data/Server/" + username + "/" + repoName + "/RepoDataTemp.txt");
@@ -255,6 +309,14 @@ public class FileHandler {
         getString.close();
     }
 
+    /**
+     * change mode of repo
+     * @param username username
+     * @param repoName repo name
+     * @param mode public or private
+     * @return yes or no
+     * @throws IOException can not read or write file
+     */
     public int changeMode(String username, String repoName, int mode) throws IOException {
 
         if (possibleRepo(username,repoName) == 0) {
@@ -288,6 +350,13 @@ public class FileHandler {
         return 0;
     }
 
+    /**
+     * get information of repository
+     * @param username username
+     * @param repoName repo name
+     * @return info
+     * @throws IOException can not read file
+     */
     public String getInfo(String username, String repoName) throws IOException {
         if (possibleRepo(username, repoName) == 0) {
             String result = "";
@@ -320,6 +389,14 @@ public class FileHandler {
         return "Can not get information :( Please try again";
     }
 
+    /**
+     * remove contributor
+     * @param username username to remove
+     * @param repoName repo name
+     * @param name repo user
+     * @return yes or not
+     * @throws IOException can not read or write in file
+     */
     public int removeContributor(String username, String repoName, String name) throws IOException {
         if (possibleRepo(username, repoName) == 0 && possibleContributor(username, repoName, name) == 0) {
             FileWriter fw = new FileWriter("Data/Server/" + username + "/" + repoName + "/RepoDataTemp.txt");
@@ -356,6 +433,14 @@ public class FileHandler {
         return 0;
     }
 
+    /**
+     * add new directory
+     * @param username username of adder
+     * @param repoName repo name
+     * @param name name of directory
+     * @return yes or not
+     * @throws IOException can not add directory
+     */
     public int addDir(String username , String repoName , String name) throws IOException {
         if (possibleRepo(username,repoName) == 0){
             File server = new File("Data/Server/" + username + "/" + repoName + "/"+name);
@@ -367,6 +452,15 @@ public class FileHandler {
         }
         return 0;
     }
+
+    /**
+     * get commits of repo
+     * @param username username of getter
+     * @param repoName repo name
+     * @param user username
+     * @return commits
+     * @throws IOException can not read file
+     */
     public String getCommits(String username , String repoName , String user) throws IOException {
         if (possibleRepo(user,repoName) == 0 && possibleContributor(user,repoName,username) == 0){
             String result = "";
@@ -395,6 +489,14 @@ public class FileHandler {
         return "";
     }
 
+    /**
+     * can user commit in repository ?
+     * @param username username of adder
+     * @param repoName repo name
+     * @param user username
+     * @return possible or not
+     * @throws IOException can not read file
+     */
     public int possibleCommit(String username ,String repoName , String user) throws IOException {
         if (possibleRepo(user,repoName) == 0 && possibleContributor(user,repoName,username) == 0){
             FileReader fileReader = new FileReader("Data/Server/" + user + "/" + repoName + "/RepoData.txt");
@@ -421,6 +523,17 @@ public class FileHandler {
         }
         return 0;
     }
+
+    /**
+     * add commit to repo
+     * @param username username of adder
+     * @param message message
+     * @param repoAddress repo address
+     * @param user user
+     * @param fileAddress file address
+     * @param fileName file name
+     * @throws IOException can not add coomit
+     */
     public void addCommit(String username,String message ,String repoAddress, String user , String fileAddress , String fileName) throws IOException {
         String[] repo = repoAddress.split("/");
         String repoName = repo[0];
@@ -457,6 +570,15 @@ public class FileHandler {
         fw2.close();
 
     }
+
+    /**
+     * is it possible to pull ?
+     * @param username username of getter
+     * @param repoName repo name
+     * @param user username
+     * @return yes or no
+     * @throws IOException can not read file
+     */
     public int possiblePull(String username , String repoName , String user) throws IOException {
         int p = 0;
         if (possibleRepo(user, repoName) == 0 && isUser(user) == 1) {
@@ -484,8 +606,20 @@ public class FileHandler {
         }
         return 0;
     }
+
+    /**
+     * is it possible to download ?
+     * @param username username of getter
+     * @param repoName repo name
+     * @param user username
+     * @param fileName name of file
+     * @return yes or no
+     * @throws IOException can not read file
+     */
     public int possibleDownload(String username , String repoName , String user , String fileName) throws IOException {
-        if (possiblePull(username,repoName,user) == 1){
+        String[] repo = repoName.split("/");
+        if (possiblePull(username,repo[0],user) == 1){
+            System.out.println("2");
             String[] pathNames;
             File f = new File("Data/Server/"+user+"/"+repoName);
             pathNames = f.list();
@@ -499,6 +633,13 @@ public class FileHandler {
         return 0;
     }
 
+    /**
+     * get list of files
+     * @param username username
+     * @param repoName repo name
+     * @return list of files
+     * @throws IOException can not read file
+     */
     public String getFiles(String username , String repoName) throws IOException {
         String result = "";
         FileReader fileReader = new FileReader("Data/Server/" + username + "/" + repoName + "/RepoFiles.txt");

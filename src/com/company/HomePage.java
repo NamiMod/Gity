@@ -1,17 +1,13 @@
 package com.company;
 
-import jdk.jshell.execution.Util;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Random;
 
 /**
  * Gity !
@@ -45,6 +41,10 @@ public class HomePage {
     Color background = new Color(237, 237, 237);
     Color line = new Color(240, 81, 51);
 
+    /**
+     * create new HomePage
+     * @param username username
+     */
     public HomePage(String username){
 
         this.username=username;
@@ -59,7 +59,6 @@ public class HomePage {
         showHome();
 
     }
-
     /**
      * add Home page elements
      */
@@ -159,11 +158,19 @@ public class HomePage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String help;
-                help = "Commands : \n\nList of Users : ls -u\nRepositories of user : ls -r name_of_user\n" +
-                        "Make new Repository : mkrepo -public(or private) name_of_repository\n" +
-                        "Add new contributor : addc name_of_repo name_of_contributor\n"+
-                        "Change Repository mode : chm name_of_repo public(or private)\n";
-                view.setText(help);
+                help = "Commands : \n\n1 ) List of Users : ls -u\n2 ) Repositories of user : ls -r name_of_user\n" +
+                        "3 ) Make new Repository : mkrepo -public(or private) name_of_repository\n" +
+                        "4 ) Add new contributor : addc name_of_repo name_of_contributor\n"+
+                        "5 ) Change Repository mode : chm name_of_repo public(or private)\n"+
+                        "6 ) get information of repository : get -i name_of_repository  \n" +
+                        "7 ) remove contributor : removec name_of_repository name of contributor\n"+
+                        "8 ) make new directory : mkdir name_of_repository address of directory(+name)\n"+
+                        "9 ) see commits : get -c name_of_repository user\n"+
+                        "10 ) commit & push : c&p message name_of_repository user file_address file_name\n"+
+                        "11 ) pull : pull name_of_repository user\n"+
+                        "12 ) download single file : download name_of_repository user file_name\n"+
+                        "13 ) update : update name_of_repository user";
+                JOptionPane.showMessageDialog(Home, help, "Gity", JOptionPane.PLAIN_MESSAGE);
             }
         });
         Home.add(help);

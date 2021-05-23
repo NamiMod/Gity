@@ -1,6 +1,5 @@
 package com.company;
 import java.io.*;
-import java.net.Socket;
 
 /**
  * Gity !
@@ -19,11 +18,22 @@ public class Client {
     private String name;
     private String command;
 
+    /**
+     * create new client
+     * @param name name of client
+     * @param command command to run
+     * @throws IOException can not use files
+     */
     public Client(String name, String command) throws IOException {
         this.name = name;
         this.command = command;
     }
 
+    /**
+     * run command
+     * @return result of command
+     * @throws IOException can not use file
+     */
     public String run() throws IOException {
 
         if (command.contains("ls -u")) {
@@ -232,11 +242,24 @@ public class Client {
 
     }
 
+    /**
+     * login user
+     * @param username username
+     * @param password password
+     * @return possible or not
+     * @throws IOException can not use files
+     */
     public static int login(String username, String password) throws IOException {
         Request req = new Request();
         return req.login_Register(0,username,password);
     }
-
+    /**
+     * register new user
+     * @param username username
+     * @param password password
+     * @return possible or not
+     * @throws IOException can not use files
+     */
     public static int register(String username, String password) throws IOException {
         Request req = new Request();
         return req.login_Register(1,username,password);

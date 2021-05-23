@@ -22,6 +22,10 @@ public class Server {
     private BufferedReader input;
     private PrintWriter output;
 
+    /**
+     * create new server
+     * @param args args
+     */
     public static void main(String[] args){
         Server server = new Server();
         try {
@@ -52,10 +56,10 @@ public class Server {
 
     /**
      * handle request
+     * @param server socket of server
      * @return result
      * @throws IOException cant read files
      */
-
     public int handle(Socket server) throws IOException {
 
         String code = input.readLine();

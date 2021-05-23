@@ -4,6 +4,19 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 
+/**
+ * Gity !
+ * in this class we handle requests of client
+ *
+ * Network Project
+ *
+ *
+ * @author Seyed Nami Modarressi
+ * @version 1.0
+ *
+ * Spring 2021
+ */
+
 public class Request {
     private Socket socket;
     private BufferedReader read;
@@ -34,7 +47,11 @@ public class Request {
         }
     }
 
-
+    /**
+     * get users request
+     * @return users
+     * @throws IOException can not send req
+     */
     public String getUsers() throws IOException {
         socket = new Socket("127.0.0.1", 1235);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -49,6 +66,12 @@ public class Request {
         }
     }
 
+    /**
+     * get repositories request
+     * @param name name of user
+     * @return  repositories
+     * @throws IOException can not send request
+     */
     public String getRepos(String name) throws IOException {
         socket = new Socket("127.0.0.1", 1235);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -63,6 +86,14 @@ public class Request {
         }
     }
 
+    /**
+     * make new repo request
+     * @param username username
+     * @param name name of repo
+     * @param code public or private
+     * @return possible or not
+     * @throws IOException can not send request
+     */
     public int makeRepo(String username, String name, int code) throws IOException {
         socket = new Socket("127.0.0.1", 1235);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -77,6 +108,14 @@ public class Request {
         }
     }
 
+    /**
+     * add contributor request
+     * @param username username
+     * @param repoName repo name
+     * @param name name of user
+     * @return possible or not
+     * @throws IOException can not sed request
+     */
     public int addContributor(String username, String repoName, String name) throws IOException {
         socket = new Socket("127.0.0.1", 1235);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -91,6 +130,14 @@ public class Request {
         }
     }
 
+    /**
+     * change mode request
+     * @param username username
+     * @param repoName repo name
+     * @param mode public or private
+     * @return possible or not
+     * @throws IOException can not send request
+     */
     public int changeMode(String username, String repoName, int mode) throws IOException {
         socket = new Socket("127.0.0.1", 1235);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -105,6 +152,13 @@ public class Request {
         }
     }
 
+    /**
+     * get repo info request
+     * @param username username
+     * @param repoName repo name
+     * @return info
+     * @throws IOException cannot send request
+     */
     public String getRepoInfo(String username, String repoName) throws IOException {
         socket = new Socket("127.0.0.1", 1235);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -119,6 +173,14 @@ public class Request {
         }
     }
 
+    /**
+     * remove contributor request
+     * @param username username
+     * @param repoName repo name
+     * @param name name
+     * @return possible or not
+     * @throws IOException can not send request
+     */
     public int removeContributor(String username, String repoName, String name) throws IOException {
         socket = new Socket("127.0.0.1", 1235);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -133,6 +195,14 @@ public class Request {
         }
     }
 
+    /**
+     * make new directory
+     * @param username username
+     * @param repoName repo name
+     * @param name directory name
+     * @return possible or not
+     * @throws IOException can not send request
+     */
     public int makeDir(String username, String repoName, String name) throws IOException {
         socket = new Socket("127.0.0.1", 1235);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -147,6 +217,14 @@ public class Request {
         }
     }
 
+    /**
+     * get commits request
+     * @param username username
+     * @param repoName repo name
+     * @param user user
+     * @return commits
+     * @throws IOException can not send request
+     */
     public String getCommits(String username, String repoName, String user) throws IOException {
         socket = new Socket("127.0.0.1", 1235);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -160,6 +238,15 @@ public class Request {
             close();
         }
     }
+
+    /**
+     * possible to commit or not ?
+     * @param username username
+     * @param repoName repo name
+     * @param user user
+     * @return possible or not
+     * @throws IOException can not send request
+     */
     public int possibleCommit(String username, String repoName, String user) throws IOException {
         socket = new Socket("127.0.0.1", 1235);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -173,6 +260,17 @@ public class Request {
             close();
         }
     }
+
+    /**
+     * send file to server
+     * @param username username
+     * @param message message
+     * @param repoAddress repo address
+     * @param user user
+     * @param fileAddress file address
+     * @param fileName file name
+     * @throws IOException can not send request
+     */
     public void sendFile(String username,String message ,String repoAddress, String user , String fileAddress , String fileName) throws IOException {
         socket = new Socket("127.0.0.1", 1235);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -204,6 +302,15 @@ public class Request {
             close();
         }
     }
+
+    /**
+     * possible to pull ?
+     * @param username username
+     * @param repoName repo name
+     * @param user user
+     * @return possible or not
+     * @throws IOException can not send request
+     */
     public int possiblePull(String username, String repoName, String user) throws IOException {
         socket = new Socket("127.0.0.1", 1235);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -217,6 +324,14 @@ public class Request {
             close();
         }
     }
+
+    /**
+     * pull request
+     * @param username username
+     * @param repoName repo name
+     * @param name name
+     * @throws IOException can not send request
+     */
     public void pull(String username , String repoName , String name) throws IOException {
         socket = new Socket("127.0.0.1", 1235);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -237,6 +352,16 @@ public class Request {
             close();
         }
     }
+
+    /**
+     * possible to download ?
+     * @param username username
+     * @param repoName repo name
+     * @param user user
+     * @param fileName file name
+     * @return possible or not
+     * @throws IOException can not send request
+     */
     public int possibleDownload(String username, String repoName, String user , String fileName) throws IOException {
         socket = new Socket("127.0.0.1", 1235);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -250,6 +375,15 @@ public class Request {
             close();
         }
     }
+
+    /**
+     * download file request
+     * @param username username
+     * @param repoName repo name
+     * @param name name
+     * @param fileName file name
+     * @throws IOException can not send request
+     */
     public void download(String username , String repoName , String name , String fileName) throws IOException {
         socket = new Socket("127.0.0.1", 1235);
         output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -295,6 +429,15 @@ public class Request {
             close();
         }
     }
+
+    /**
+     * need update
+     * @param username username
+     * @param repoName repo name
+     * @param name name
+     * @return need or not
+     * @throws IOException can not send request
+     */
     public int needUpdate(String username , String repoName , String name) throws IOException {
         FileReader fileReader = new FileReader("Data/Client/" + username + "/" + repoName + "/RepoData.txt");
         Scanner getString = new Scanner(fileReader);
@@ -360,12 +503,23 @@ public class Request {
         return Integer.parseInt(response);
     }
 
+    /**
+     * get users
+     * @return users
+     * @throws IOException can not send request
+     */
     public String users() throws IOException {
         output.println("3");
         output.flush();
         return read.readLine();
     }
 
+    /**
+     * get repos
+     * @param name name
+     * @return repos
+     * @throws IOException can not send request
+     */
     public String repos(String name) throws IOException {
         output.println("4");
         output.println(name);
@@ -373,6 +527,14 @@ public class Request {
         return read.readLine();
     }
 
+    /**
+     * new repo request
+     * @param username username
+     * @param name name
+     * @param code public or private
+     * @return possible or not
+     * @throws IOException can not send request
+     */
     public int newRepo(String username , String name , int code) throws IOException {
         output.println("5");
         output.println(username);
@@ -382,6 +544,14 @@ public class Request {
         return Integer.parseInt(read.readLine());
     }
 
+    /**
+     * new contributor
+     * @param username username
+     * @param repoName repo name
+     * @param name name
+     * @return possible or not
+     * @throws IOException can not send request
+     */
     public int newContributor(String username,String repoName , String name) throws IOException {
         output.println("6");
         output.println(username);
@@ -391,6 +561,14 @@ public class Request {
         return Integer.parseInt(read.readLine());
     }
 
+    /**
+     * change mode
+     * @param username username
+     * @param repoName repo name
+     * @param mode new mode
+     * @return possible or not
+     * @throws IOException can not send request
+     */
     public int newMode(String username , String repoName , int mode) throws IOException {
         output.println("7");
         output.println(username);
@@ -399,6 +577,14 @@ public class Request {
         output.flush();
         return Integer.parseInt(read.readLine());
     }
+
+    /**
+     * get repo info
+     * @param username username
+     * @param repoName repo name
+     * @return info
+     * @throws IOException can not send request
+     */
     public String repoInfo(String username , String repoName) throws IOException{
         output.println("8");
         output.println(username);
@@ -406,6 +592,15 @@ public class Request {
         output.flush();
         return read.readLine();
     }
+
+    /**
+     * remove contributor
+     * @param username username
+     * @param repoName repo name
+     * @param name name
+     * @return possible or not
+     * @throws IOException can not send request
+     */
     public int remove(String username , String repoName , String name) throws IOException{
         output.println("9");
         output.println(username);
@@ -414,6 +609,15 @@ public class Request {
         output.flush();
         return Integer.parseInt(read.readLine());
     }
+
+    /**
+     * make new directory
+     * @param username username
+     * @param repoName repo name
+     * @param name name
+     * @return possible or not
+     * @throws IOException can not send request
+     */
     public int newDir(String username , String repoName , String name) throws IOException{
         output.println("10");
         output.println(username);
@@ -422,6 +626,15 @@ public class Request {
         output.flush();
         return Integer.parseInt(read.readLine());
     }
+
+    /**
+     * get commits
+     * @param username username
+     * @param repoName repo name
+     * @param user user
+     * @return commits
+     * @throws IOException can not send request
+     */
     public String getRepoCommits(String username , String repoName , String user) throws IOException {
         output.println("11");
         output.println(username);
@@ -430,6 +643,15 @@ public class Request {
         output.flush();
         return read.readLine();
     }
+
+    /**
+     * commit
+     * @param username username
+     * @param repoName repo name
+     * @param user user
+     * @return possible or not
+     * @throws IOException can not send request
+     */
     public int commit(String username , String repoName , String user)throws IOException{
         output.println("12");
         output.println(username);
@@ -438,6 +660,15 @@ public class Request {
         output.flush();
         return Integer.parseInt(read.readLine());
     }
+
+    /**
+     * possible to pull ?
+     * @param username username
+     * @param repoName repo name
+     * @param user user
+     * @return possible ot nor
+     * @throws IOException can not send request
+     */
     public int pPull(String username , String repoName , String user)throws IOException{
         output.println("14");
         output.println(username);
@@ -446,6 +677,16 @@ public class Request {
         output.flush();
         return Integer.parseInt(read.readLine());
     }
+
+    /**
+     * download file request
+     * @param username username
+     * @param repoName repo name
+     * @param user user
+     * @param fileName file name
+     * @return possible or not
+     * @throws IOException can not send request
+     */
     public int pDownload(String username , String repoName , String user , String fileName)throws IOException{
         output.println("16");
         output.println(username);

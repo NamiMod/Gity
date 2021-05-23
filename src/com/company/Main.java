@@ -10,13 +10,13 @@ import java.io.IOException;
  *
  *
  * @author Seyed Nami Modarressi
- * @version 0.01
+ * @version 1.0
  *
  * Spring 2021
  */
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        LoginAndRegisterPage p = new LoginAndRegisterPage();
+        LoginAndRegisterPage start = new LoginAndRegisterPage();
     }
 }
