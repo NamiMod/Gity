@@ -2,10 +2,7 @@ package com.company;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Gity !
@@ -195,7 +192,8 @@ public class Server {
         if (code.equals("15")){
             String username = input.readLine();
             String repoName = input.readLine();
-            // ToDo send files
+            FileHandler p = new FileHandler();
+            output.println(p.getFiles(username,repoName));
         }
         if (code.equals("16")){
             String username = input.readLine();

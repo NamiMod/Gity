@@ -158,6 +158,12 @@ public class FileHandler {
         fw.write(username + "\n");
         fw.write("0" + "\n");
         fw.close();
+        FileWriter fw2 = new FileWriter("Data/Server/" + username + "/" + name + "/RepoFiles.txt");
+        fw2.write("RepoData.txt" + "\n");
+        fw2.write(name + "\n");
+        fw2.write("RepoFiles.txt" + "\n");
+        fw2.write(name + "\n");
+        fw2.close();
         return 1;
     }
 
@@ -444,24 +450,28 @@ public class FileHandler {
         copy(user, repoName);
         File f = new File("Data/Server/" + user + "/" + repoName + "/RepoDataTemp.txt");
         f.delete();
+
+        FileWriter fw2 = new FileWriter("Data/Server/" + user + "/" + repoName + "/RepoFiles.txt",true);
+        fw2.write(fileName+"\n");
+        fw2.write(repoAddress+"\n");
+        fw2.close();
+
     }
     public int possiblePull(String username , String repoName , String user) throws IOException {
         int p = 0;
-        if (possibleRepo(user,repoName) == 0){
+        if (possibleRepo(user, repoName) == 0 && isUser(user) == 1) {
             FileReader fileReader = new FileReader("Data/Server/" + user + "/" + repoName + "/RepoData.txt");
             Scanner getString = new Scanner(fileReader);
             while (getString.hasNext()) {
                 int code = Integer.parseInt(getString.nextLine());
-                if (code == 1){
-                    p = 1;
-                    break;
+                if (code == 1) {
+                    return 1;
                 }
-                String cNumber = getString.nextLine();
-                for (int i = 0; i < Integer.parseInt(cNumber); i++) {
+                int cNumber = Integer.parseInt(getString.nextLine());
+                for (int i = 0; i < cNumber; i++) {
                     String cName = getString.nextLine();
-                    if (code == 2 && cName.equals(username)){
-                        p = 1;
-                        break;
+                    if (code == 2 && cName.equals(username)) {
+                        return 1;
                     }
                 }
                 String coNumber = getString.nextLine();
@@ -472,10 +482,7 @@ public class FileHandler {
             getString.close();
             fileReader.close();
         }
-        if (p == 0){
-            return 0;
-        }
-        return 1;
+        return 0;
     }
     public int possibleDownload(String username , String repoName , String user , String fileName) throws IOException {
         if (possiblePull(username,repoName,user) == 1){
@@ -490,6 +497,22 @@ public class FileHandler {
             }
         }
         return 0;
+    }
+
+    public String getFiles(String username , String repoName) throws IOException {
+        String result = "";
+        FileReader fileReader = new FileReader("Data/Server/" + username + "/" + repoName + "/RepoFiles.txt");
+        Scanner getString = new Scanner(fileReader);
+        while (getString.hasNext()) {
+            if (getString.hasNext()) {
+                result = result + getString.nextLine() + " ";
+            }else {
+                result = result + getString.nextLine();
+            }
+        }
+        getString.close();
+        fileReader.close();
+        return result;
     }
 
 }

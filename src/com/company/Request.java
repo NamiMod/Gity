@@ -226,8 +226,11 @@ public class Request {
             output.println(name);
             output.println(repoName);
             output.flush();
-            //ToDo get files
-
+            String files = read.readLine();
+            String[] pulls = files.split(" ");
+            for (int i = 0 ; i < pulls.length ; i = i + 2){
+                download(username,pulls[i+1],name,pulls[i]);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
