@@ -619,7 +619,6 @@ public class FileHandler {
     public int possibleDownload(String username , String repoName , String user , String fileName) throws IOException {
         String[] repo = repoName.split("/");
         if (possiblePull(username,repo[0],user) == 1){
-            System.out.println("2");
             String[] pathNames;
             File f = new File("Data/Server/"+user+"/"+repoName);
             pathNames = f.list();
