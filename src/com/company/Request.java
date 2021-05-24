@@ -296,6 +296,8 @@ public class Request {
             bos.close();
             bis.close();
             System.out.println("File upload completed");
+            String[] data = repoAddress.split("/");
+            download(username,data[0],username,"RepoData.txt");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -450,7 +452,7 @@ public class Request {
             }
             coNumber = getString.nextLine();
             for (int i = 0; i < Integer.parseInt(coNumber); i++) {
-                 String coName = getString.nextLine();
+                String coName = getString.nextLine();
             }
         }
         getString.close();

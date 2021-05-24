@@ -1,5 +1,6 @@
 package com.company;
 import java.io.*;
+import java.util.Scanner;
 
 /**
  * Gity !
@@ -237,6 +238,31 @@ public class Client {
             } else {
                 return "can not update ! :( Please try again ";
             }
+        }
+        if (command.contains("get -m")){
+            String result = "";
+            String[] data = command.split(" ",3);
+            FileReader fileReader = new FileReader("Data/Client/" + name + "/" + data[2] + "/RepoData.txt");
+            Scanner getString = new Scanner(fileReader);
+            while (getString.hasNext()) {
+                String code = getString.nextLine();
+                String cNumber = getString.nextLine();
+                for (int i = 0; i < Integer.parseInt(cNumber); i++) {
+                    String cName = getString.nextLine();
+                }
+                String coNumber = getString.nextLine();
+                if (Integer.parseInt(coNumber) != 0) {
+                    for (int i = 0; i < Integer.parseInt(coNumber); i++) {
+                        String coName = getString.nextLine();
+                        if (coName.contains(name)){
+                            result=result+coName+"\n";
+                        }
+                    }
+                }
+            }
+            getString.close();
+            fileReader.close();
+            return result;
         }
         return "Command Not Found !  \nPlease use help button to see available commands";
 
