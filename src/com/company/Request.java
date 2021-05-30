@@ -297,7 +297,7 @@ public class Request {
             bis.close();
             System.out.println("File upload completed");
             String[] data = repoAddress.split("/");
-            download(username,data[0],username,"RepoData.txt");
+            download(username,data[0],user,"RepoData.txt");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -392,6 +392,8 @@ public class Request {
         read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         try {
             output.println("17");
+            System.out.println(name);
+            System.out.println(username);
             output.println(name);
             output.println(repoName);
             output.println(fileName);
